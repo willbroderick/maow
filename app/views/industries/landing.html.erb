@@ -1,0 +1,9 @@
+<h1>Industry: <%= @industry.name %></h1>
+
+<p>Topics:</p>
+<% @industry.topics.all.each do |topic| %>
+<section class="topic">
+  <h2 class="topic-name"><%= link_to topic.name, topic_show_path(topic) %></h2>
+</section>
+<% end %>
+

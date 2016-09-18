@@ -1,0 +1,13 @@
+<section class="topic">
+  <h2 class="topic-name">Topic: <%= @topic.name %></h2>
+  <div class="rules">
+    <label>Rules:</label>
+    <% @topic.topic_rules.each do |rule| %>
+    <span><%= rule.summary %></span>
+    <% end %>
+  </div>
+  <div class="article-bias-graph">
+    <%= render partial: 'article',
+      collection: @topic.articles.order('published_at DESC').includes(:source) %>
+  </div>
+</section>

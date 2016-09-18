@@ -11,21 +11,85 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160827094732) do
+ActiveRecord::Schema.define(version: 20160918092924) do
+
+  create_table "article_entities", force: :cascade do |t|
+    t.integer "article_id", null: false
+    t.integer "entity_id",  null: false
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.integer  "source_id",    null: false
+    t.string   "title",        null: false
+    t.text     "summary"
+    t.datetime "published_at", null: false
+    t.text     "uid",          null: false
+    t.string   "url"
+    t.text     "raw"
+  end
+
+  create_table "biases", force: :cascade do |t|
+    t.integer "industry_id", null: false
+    t.string  "name",        null: false
+    t.text    "description"
+    t.string  "from_colour", null: false
+    t.string  "to_colour",   null: false
+  end
+
+  create_table "entities", force: :cascade do |t|
+    t.integer "industry_id", null: false
+    t.string  "entity",      null: false
+  end
+
+  create_table "industries", force: :cascade do |t|
+    t.string "name",        null: false
+    t.text   "description"
+  end
+
+  create_table "source_bias_levels", force: :cascade do |t|
+    t.integer "source_id", null: false
+    t.integer "bias_id",   null: false
+    t.integer "level",     null: false
+  end
+
+  create_table "sources", force: :cascade do |t|
+    t.integer  "industry_id",  null: false
+    t.string   "name",         null: false
+    t.text     "svg_icon"
+    t.string   "colour",       null: false
+    t.string   "rss_url",      null: false
+    t.datetime "last_fetched"
+    t.string   "svg_bg"
+  end
+
+  create_table "topic_rules", force: :cascade do |t|
+    t.integer  "topic_id",                   null: false
+    t.integer  "logic",          default: 0, null: false
+    t.integer  "value_integer"
+    t.datetime "value_datetime"
+    t.string   "value_string"
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.integer "industry_id", null: false
+    t.string  "name",        null: false
+  end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.boolean  "is_enabled",             default: true,  null: false
+    t.boolean  "is_admin",               default: false, null: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Maow</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <title>MAOW - Media Aggregation and Orientation Watchdog</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -11,6 +12,20 @@
 <div class="notice"><%= notice %></div>
 <div class="alert"><%= alert %></div>
 
+<% if @industry %>
+<div>
+  <%= link_to 'Home', industry_landing_path(@industry) %>
+
+  <% if current_user %>
+    <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+
+    <% if current_user.is_admin %>
+      <%= link_to 'Fetch data', fetch_all_for_industry_path(@industry) %>
+      <%= link_to 'Rebuild entities', rebuild_all_for_industry_path(@industry) %>
+    <% end %>
+  <% end %>
+</div>
+<% end %>
 
 <%= yield %>
 

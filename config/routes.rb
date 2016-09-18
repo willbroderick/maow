@@ -1,55 +1,22 @@
 Rails.application.routes.draw do
+  # admin
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+
+  # accounts
   devise_for :users
 
-  root 'welcome#index'
+  # homepage
+  root 'industries#default'
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
+  # landing page for an industry
+  get 'industry/:id' => 'industries#landing', as: 'industry_landing'
 
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+  # viewing page for a topic
+  get 'topic/:id' => 'topics#show', as: 'topic_show'
 
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
+  # fetch latest data
+  get 'fetch/:id' => 'sources#fetch_all_for_industry', as: 'fetch_all_for_industry'
 
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  # rebuild entities
+  get 'rebuild/:id' => 'sources#rebuild_all_for_industry', as: 'rebuild_all_for_industry'
 end

@@ -1,6 +1,6 @@
 <div class="article" data-bias-level="<%= article.source.source_bias_levels.take.level %>" data-date="<%= article.published_at.strftime('%F %R') %>">
   <div class="article-headline headline">
-    <a href="<%= article.url %>" target="_blank"><%= article.title %></a>
+    <a href="<%= article.url %>" target="_blank"><%= article.title.html_safe %></a>
   </div>
 
   <div class="article-info">

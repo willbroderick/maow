@@ -61,12 +61,13 @@ img {
 .article-published-at {
     position: absolute;
     right: 100%;
-    top: 0;
+    top: 2px;
     margin-right: -60px;
     font-size: 13px;
     line-height: 1.3em;
     text-align: right;
     white-space: nowrap;
+    font-family: Courier New, mono;
 }
 
 .article-source {

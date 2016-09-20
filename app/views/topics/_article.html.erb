@@ -1,17 +1,17 @@
+<%# TODO: SAVE BIAS LEVEL AGAINST ARTICLE - BETTER FOR ALL - CAN FETCH IN A SINGLE JOIN %>
 <div class="article" data-bias-level="<%= article.source.source_bias_levels.take.level %>" data-date="<%= article.published_at.strftime('%F %R') %>">
+  <div class="article-published-at">
+    <div><%= article.published_at.strftime('%e %b %Y').gsub(DateTime.current.year.to_s, '') %></div>
+    <div><%= article.published_at.strftime('%R') %></div>
+  </div>
+
   <div class="article-headline headline">
     <a href="<%= article.url %>" target="_blank"><%= article.title.html_safe %></a>
   </div>
 
-  <div class="article-info">
-    <div class="article-published-at">
-      <%= article.published_at.strftime('%e %b %Y').gsub(DateTime.current.year.to_s, '') %>
-    </div>
-
-    <div class="article-source">
-      <div class="svg-wrap" style="background:<%= article.source.svg_bg %>">
-        <%= article.source.svg_icon.html_safe %>
-      </div>
+  <div class="article-source">
+    <div class="svg-wrap" style="background:<%= article.source.svg_bg %>">
+      <%= article.source.svg_icon.html_safe %>
     </div>
   </div>
 </div>

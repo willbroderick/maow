@@ -31,7 +31,14 @@ $(function($){
     var vMargin = parseInt($articles.first().css('margin-left'));
     var workingWidth = $(this).width() - $articles.first().outerWidth() - vMargin*2;
     var leftMostBias = 100, rightMostBias = 0;
+    var columns = {};
     $articles.each(function(){
+      // pop each article in its bias-column
+      if(typeof columns[$(this).data('bias-level')] == 'undefined') {
+        columns[$(this).data('bias-level')] = { articles: [], currTop: 0 };
+      }
+      columns[$(this).data('bias-level')].articles.push(this);
+      // find visual bounds
       if($(this).data('bias-level') > rightMostBias) {
         rightMostBias = $(this).data('bias-level');
       }
@@ -39,20 +46,38 @@ $(function($){
         leftMostBias = $(this).data('bias-level');
       }
     });
-    var currTop = 0;
-    $articles.each(function(){
-      var $toPlace = $(this);
-      var left = workingWidth * ($(this).data('bias-level') - leftMostBias)/(rightMostBias - leftMostBias);
-      $toPlace.css({ top: currTop, left: left }).addClass('placed');
-      // if overlap, move top
-      $articles.filter('.placed').not(this).reverse().each(function(){
-        if(overlaps($toPlace, this)) {
-          currTop += $(this).outerHeight() + vMargin;
-          $toPlace.css('top', currTop);
-          return false;
+    var totalToPlace = $articles.length;
+    var placed = [];
+    while(totalToPlace > 0) {
+      for(var key in columns) {
+        if(columns[key].articles.length > 0) {
+          var $toPlace = $(columns[key].articles.shift());
+          totalToPlace--;
+          $toPlace.css({
+            top: columns[key].currTop,
+            left: workingWidth * (key - leftMostBias)/(rightMostBias - leftMostBias)
+          }).addClass('placed');
+          // cache some numeric values we'll need later
+          $toPlace.data({
+            itop: columns[key].currTop,
+            iheight: $toPlace.outerHeight(true)
+          });
+          $(placed).each(function(index){
+            if(overlaps($toPlace, this)) {
+              columns[key].currTop = Math.max(
+                $(this).data('itop') + $(this).data('iheight'),
+                columns[key].currTop
+              );
+              // set new position
+              $toPlace.css('top', columns[key].currTop);
+              $toPlace.data('itop', columns[key].currTop);
+            }
+          });
+          columns[key].currTop += $toPlace.data('iheight');
+          placed.unshift($toPlace);
         }
-      });
-    });
+      }
+    }
   }).trigger('dolayout');
 
   $(window).on('load resize', function(){

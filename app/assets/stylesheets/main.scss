@@ -45,12 +45,17 @@ img {
 .article {
     position: relative;
     margin: 10px;
-    padding: 0 0 0 70px;
     width: 350px;
     border-radius: 2px;
     background: transparent;
+    opacity: 0.1;
     &.placed {
         position: absolute;
+        opacity: 1;
+    }
+    .article-headline,
+    .article-source {
+        margin-left: 70px;
     }
 }
 
@@ -59,10 +64,9 @@ img {
 }
 
 .article-published-at {
-    position: absolute;
-    right: 100%;
-    top: 2px;
-    margin-right: -60px;
+    float: left;
+    width: 60px;
+    margin-top: 2px;
     font-size: 13px;
     line-height: 1.3em;
     text-align: right;

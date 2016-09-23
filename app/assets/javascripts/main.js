@@ -1,9 +1,12 @@
+// debouncedresize
+!function(a){var c,d,b=a.event;c=b.special.debouncedresize={setup:function(){a(this).on("resize",c.handler)},teardown:function(){a(this).off("resize",c.handler)},handler:function(a,e){var f=this,g=arguments,h=function(){a.type="debouncedresize",b.dispatch.apply(f,g)};d&&clearTimeout(d),e?h():d=setTimeout(h,c.threshold)},threshold:150}}(jQuery);
+
 var overlaps = (function () {
     function getPositions( elem ) {
         var pos, width, height;
         pos = $( elem ).position();
-        width = $( elem ).outerWidth();
-        height = $( elem ).outerHeight();
+        width = $( elem ).width();
+        height = $( elem ).height();
         return [ [ pos.left, pos.left + width ], [ pos.top, pos.top + height ] ];
     }
 
@@ -74,13 +77,13 @@ $(function($){
             }
           });
           columns[key].currTop += $toPlace.data('iheight');
-          placed.unshift($toPlace);
+          placed.push($toPlace);
         }
       }
     }
   }).trigger('dolayout');
 
-  $(window).on('load resize', function(){
+  $(window).on('load debouncedresize', function(){
     $('.article-bias-graph').trigger('dolayout');
   });
 });

@@ -2,8 +2,8 @@ var overlaps = (function () {
     function getPositions( elem ) {
         var pos, width, height;
         pos = $( elem ).position();
-        width = $( elem ).width();
-        height = $( elem ).height();
+        width = $( elem ).outerWidth();
+        height = $( elem ).outerHeight();
         return [ [ pos.left, pos.left + width ], [ pos.top, pos.top + height ] ];
     }
 

@@ -52,12 +52,21 @@ class Article < ActiveRecord::Base
     # check remaining terms - allow hyphenation and underscores
     terms_remaining = terms_remaining.gsub(/[^\w\_\-\ ]/, '').split(' ').uniq
 
+    # fetch common terms in one query
+    common_entities = source.industry.entities.
+      where(is_compound: false).
+      where(importance: 0).to_a # would be good to cache across calls
+
     terms_to_add = Set.new
     terms_remaining.each do |term|
-      # reset as we may have added one...
-      entity = source.industry.entities.
-        where(is_compound: false).
-        where(entity: term).take
+      # check against common terms first
+      entity = common_entities.detect{ |e| e.entity == term }
+      # no? then hit the DB
+      if entity.nil?
+        entity = source.industry.entities.
+          where(is_compound: false).
+          where(entity: term).take
+      end
       if entity
         # match found
         ass_ids.push(entity.id) if entity.importance > 0

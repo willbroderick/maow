@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160918092924) do
+ActiveRecord::Schema.define(version: 20161002144027) do
 
   create_table "article_entities", force: :cascade do |t|
     t.integer "article_id", null: false
@@ -37,9 +37,13 @@ ActiveRecord::Schema.define(version: 20160918092924) do
   end
 
   create_table "entities", force: :cascade do |t|
-    t.integer "industry_id", null: false
-    t.string  "entity",      null: false
+    t.integer "industry_id",                 null: false
+    t.string  "entity",                      null: false
+    t.integer "importance",  default: 0,     null: false
+    t.boolean "is_compound", default: false, null: false
   end
+
+  add_index "entities", ["entity"], name: "index_entities_on_entity"
 
   create_table "industries", force: :cascade do |t|
     t.string "name",        null: false
@@ -53,13 +57,14 @@ ActiveRecord::Schema.define(version: 20160918092924) do
   end
 
   create_table "sources", force: :cascade do |t|
-    t.integer  "industry_id",  null: false
-    t.string   "name",         null: false
+    t.integer  "industry_id",                 null: false
+    t.string   "name",                        null: false
     t.text     "svg_icon"
-    t.string   "colour",       null: false
-    t.string   "rss_url",      null: false
+    t.string   "colour",                      null: false
+    t.string   "rss_url",                     null: false
     t.datetime "last_fetched"
     t.string   "svg_bg"
+    t.boolean  "enabled",      default: true, null: false
   end
 
   create_table "topic_rules", force: :cascade do |t|

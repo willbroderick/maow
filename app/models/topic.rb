@@ -1,6 +1,6 @@
 class Topic < ActiveRecord::Base
   belongs_to :industry
-  has_many :topic_rules
+  has_many :topic_rules, dependent: :destroy
 
   def articles
     # find all matching articles

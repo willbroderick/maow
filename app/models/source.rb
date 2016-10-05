@@ -6,6 +6,7 @@ class Source < ActiveRecord::Base
   def fetch
     total = 0
     if last_fetched.nil? || last_fetched < DateTime.current - 30.minutes
+      update_columns(last_fetched: DateTime.current)
       # fetch feed
       feed = Feedjira::Feed.fetch_and_parse rss_url
       # ensure we will not exceed capacity limits

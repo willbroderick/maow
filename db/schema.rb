@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161002144027) do
+ActiveRecord::Schema.define(version: 20161004073850) do
 
   create_table "article_entities", force: :cascade do |t|
     t.integer "article_id", null: false
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20161002144027) do
   end
 
   add_index "entities", ["entity"], name: "index_entities_on_entity"
+  add_index "entities", ["importance"], name: "index_entities_on_importance"
 
   create_table "industries", force: :cascade do |t|
     t.string "name",        null: false

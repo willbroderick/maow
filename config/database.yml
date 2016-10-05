@@ -22,4 +22,12 @@ test:
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  host: localhost
+  adapter: postgresql
+  encoding: utf8
+  database: maow_production
+  pool: 5
+  username: <%= ENV['MAOW_DATABASE_USER'] %>
+  password: <%= ENV['MAOW_DATABASE_PASSWORD'] %>
+
+maow / supersecurel0ll0l

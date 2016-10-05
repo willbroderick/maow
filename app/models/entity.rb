@@ -1,8 +1,6 @@
-# importance:
-# 0 = ignore
-# 1 = new
-# anything else = custom value
-
+# importance = 0 are irrelevent and unused
+# importance = 1 are new
+# importance > 1 have been recognised as important
 class Entity < ActiveRecord::Base
   belongs_to :industry
   has_many :article_entities, dependent: :delete_all

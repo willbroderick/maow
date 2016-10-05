@@ -19,4 +19,7 @@ Rails.application.routes.draw do
 
   # rebuild entities
   get 'rebuild/:id' => 'sources#rebuild_all_for_industry', as: 'rebuild_all_for_industry'
+
+  # assess entity importance
+  get 'reassess_entities/:id' => 'entities#reassess_all_for_industry', as: 'reassess_all_for_industry'
 end

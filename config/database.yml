@@ -29,5 +29,3 @@ production:
   pool: 5
   username: <%= ENV['MAOW_DATABASE_USER'] %>
   password: <%= ENV['MAOW_DATABASE_PASSWORD'] %>
-
-maow / supersecurel0ll0l

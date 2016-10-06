@@ -1,5 +1,5 @@
 class Industry < ActiveRecord::Base
-  SUPERFLUITY_RATIO = 0.4 # e.g. 0.2 = more than 20% of articles contain entity
+  SUPERFLUITY_RATIO = 0.3 # e.g. 0.2 = more than 20% of articles contain entity
 
   has_many :sources, dependent: :destroy
   has_many :biases, dependent: :destroy

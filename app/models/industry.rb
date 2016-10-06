@@ -14,20 +14,15 @@ class Industry < ActiveRecord::Base
 
     # items in a large percentage of articles are not helpful
     sql = %{
-      SELECT
-        id,
-        entity,
-        (
-          SELECT COUNT(article_entities.id)
-          FROM article_entities
-          WHERE article_entities.entity_id = entities.id
-        ) AS c_specific,
-        industry_id
+      SELECT id
       FROM entities
       WHERE entities.industry_id = ?
       AND importance > 0
-      AND c_specific > ?
-      ORDER BY c_specific DESC
+      AND (
+          SELECT COUNT(article_entities.id)
+          FROM article_entities
+          WHERE article_entities.entity_id = entities.id
+        ) > ?
     }
     #abort (articles.count * SUPERFLUITY_RATIO).to_s
     sql = ActiveRecord::Base.send(:sanitize_sql_array, [

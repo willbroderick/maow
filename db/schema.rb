@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20161004073850) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "article_entities", force: :cascade do |t|
     t.integer "article_id", null: false
     t.integer "entity_id",  null: false
@@ -43,8 +46,8 @@ ActiveRecord::Schema.define(version: 20161004073850) do
     t.boolean "is_compound", default: false, null: false
   end
 
-  add_index "entities", ["entity"], name: "index_entities_on_entity"
-  add_index "entities", ["importance"], name: "index_entities_on_importance"
+  add_index "entities", ["entity"], name: "index_entities_on_entity", using: :btree
+  add_index "entities", ["importance"], name: "index_entities_on_importance", using: :btree
 
   create_table "industries", force: :cascade do |t|
     t.string "name",        null: false
@@ -98,7 +101,7 @@ ActiveRecord::Schema.define(version: 20161004073850) do
     t.boolean  "is_admin",               default: false, null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

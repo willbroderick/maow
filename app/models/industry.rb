@@ -1,5 +1,5 @@
 class Industry < ActiveRecord::Base
-  SUPERFLUITY_RATIO = 0.4
+  SUPERFLUITY_RATIO = 0.4 # e.g. 0.2 = more than 20% of articles contain entity
 
   has_many :sources, dependent: :destroy
   has_many :biases, dependent: :destroy
@@ -12,20 +12,35 @@ class Industry < ActiveRecord::Base
     # items with importance 1 are new
     # items with importance greater than 1 have been customised
 
-    # items in 40% of articles are not helpful
-    entities_to_delete = entities.select('id, entity').where(%{
-        COUNT(
-          SELECT id
+    # items in a large percentage of articles are not helpful
+    sql = %{
+      SELECT
+        id,
+        entity,
+        (
+          SELECT COUNT(article_entities.id)
           FROM article_entities
           WHERE article_entities.entity_id = entities.id
-        ) > ? * COUNT(
-          SELECT id
-          FROM articles
-          LEFT JOIN sources ON articles.source_id = sources.id
-          WHERE sources.industry_id = ?
-        )
-      }, SUPERFLUITY_RATIO, self.id)
-    abort entities_to_delete.inspect
-    #ArticleEntity.where('entity_id IN ?', entities_to_delete).delete_all
+        ) AS c_specific,
+        industry_id
+      FROM entities
+      WHERE entities.industry_id = ?
+      AND importance > 0
+      AND c_specific > ?
+      ORDER BY c_specific DESC
+    }
+    #abort (articles.count * SUPERFLUITY_RATIO).to_s
+    sql = ActiveRecord::Base.send(:sanitize_sql_array, [
+      sql,
+      self.id, # industry id
+      (articles.count * SUPERFLUITY_RATIO).to_i # threshold for unimportance
+      ])
+    result = ActiveRecord::Base.connection.execute(sql)
+
+    # set these ids importance to 0, and fire callback to clear associations
+    entity_ids_to_process = result.map{|r| r['id'] }
+    Entity.where(id: entity_ids_to_process).all.each do |entity|
+      entity.update(importance: 0) # triggers useful callback
+    end
   end
 end

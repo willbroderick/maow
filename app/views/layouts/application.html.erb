@@ -13,23 +13,28 @@
 <div class="alert"><%= alert %></div>
 
 <% if @industry %>
-<div>
-  <%= link_to 'Home', industry_landing_path(@industry) %>
+<div class="main-header">
+  <span class="main-header__title">MAOW</span> &bull;
+  <%= link_to @industry.name, industry_landing_path(@industry) %>
 
-  <% if current_user %>
-    <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
-
-    <% if current_user.is_admin %>
-      <%= link_to 'Fetch data', fetch_all_for_industry_path(@industry) %>
-      <%= link_to 'Rebuild article entities', rebuild_all_for_industry_path(@industry) %>
-      <%= link_to 'Reassess entities', reassess_all_for_industry_path(@industry) %>
-
+  <div class="main-nav">
+    <% if current_user %>
+      <% if current_user.is_admin %>
+        <%= link_to 'Fetch data', fetch_all_for_industry_path(@industry) %>
+        <%= link_to 'Rebuild article entities', rebuild_all_for_industry_path(@industry) %>
+        <%= link_to 'Reassess entities', reassess_all_for_industry_path(@industry) %>
+      <% end %>
+      <span>&bull;</span>
+      <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+      <%= link_to 'Admin', '/admin' %>
     <% end %>
-  <% end %>
+  </div>
 </div>
 <% end %>
 
+<div class="main-content container">
 <%= yield %>
+</div>
 
 </body>
 </html>

@@ -1,10 +1,15 @@
 <section class="topic">
-  <h2 class="topic-name">Topic: <%= @topic.name %></h2>
-  <div class="rules">
-    <label>Rules:</label>
-    <% @topic.topic_rules.each do |rule| %>
-    <span><%= rule.summary %></span>
-    <% end %>
+  <div class="opposing-items">
+    <h2 class="topic-name">Topic: <%= @topic.name %></h2>
+    <div class="rules">
+      <label>Rules:</label>
+      <% @topic.topic_rules.each do |rule| %>
+      <span class="rule">
+        <span class="rule__operator"><%= rule.operator_summary %></span>
+        <span class="rule__operand"><%= rule.operand_summary %></span>
+      </span>
+      <% end %>
+    </div>
   </div>
   <div class="article-bias-graph">
     <%= render partial: 'article',

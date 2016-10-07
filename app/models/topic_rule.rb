@@ -23,16 +23,29 @@ class TopicRule < ActiveRecord::Base
     end
   end
 
-  def summary
+  def operator_summary
     case logic.to_sym
     when :has_entity
-      "Contains #{entity_text}"
+      'Contains'
     when :does_not_have_entity
-      "Does not contain #{entity_text}"
+      'Does not contain'
     when :published_before
-      "Before #{value_datetime}"
+      'Before'
     when :published_after
-      "After #{value_datetime}"
+      'After'
+    end
+  end
+
+  def operand_summary
+    case logic.to_sym
+    when :has_entity
+      entity_text
+    when :does_not_have_entity
+      entity_text
+    when :published_before
+      value_datetime.to_s
+    when :published_after
+      value_datetime.to_s
     end
   end
 

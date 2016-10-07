@@ -1,6 +1,6 @@
 $gutter: 25px;
 
-.clearfix {
+.clearfix, .cf {
   &:after {
     content: "";
     display: table;
@@ -45,6 +45,7 @@ a {
     .main-header__title {
         color: #fff;
         font-weight: bold;
+        margin-right: 5px;
     }
     .main-nav {
         float: right;

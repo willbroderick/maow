@@ -20,7 +20,8 @@ body {
     font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
     font-size: 15px;
     line-height: 1.3em;
-    padding-bottom: 50px;
+    padding-bottom: 40px;
+    border-bottom: 10px solid #455a64;
 }
 
 a {
@@ -134,9 +135,10 @@ img {
 .article-source {
     .svg-wrap {
         display: inline-block;
-        max-width: 100px;
-        padding: 1px;
+        max-width: 110px;
+        padding: 2px;
         vertical-align: top;
+        line-height: 1px;
     }
     svg {
         max-width: 100%;

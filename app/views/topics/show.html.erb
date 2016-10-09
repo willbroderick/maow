@@ -3,12 +3,22 @@
     <h2 class="topic-name">Topic: <%= @topic.name %></h2>
     <div class="rules">
       <label>Rules:</label>
-      <% @topic.topic_rules.each do |rule| %>
+      <% if @rules_grouped[true] %>
+      <span class="rule">
+        <span class="rule__operator">Contains</span>
+        <% @rules_grouped[true].each_with_index do |rule, index| %>
+          <% if index > 0 %>or<% end %>
+          <span class="rule__operand"><%= rule.operand_summary %></span>
+        <% end %>
+        </span>
+      <% end %>
+
+      <% @rules_grouped[false].each do |rule| %>
       <span class="rule">
         <span class="rule__operator"><%= rule.operator_summary %></span>
         <span class="rule__operand"><%= rule.operand_summary %></span>
       </span>
-      <% end %>
+      <% end if !@rules_grouped[false].nil? %>
     </div>
   </div>
   <div class="article-bias-graph">

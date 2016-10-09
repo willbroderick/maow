@@ -3,11 +3,24 @@ class Topic < ActiveRecord::Base
   has_many :topic_rules, dependent: :destroy
 
   def articles
-    # find all matching articles
-    query = industry.articles
-    topic_rules.each do |rule|
-      query = rule.add_to_article_query(query)
+    sql = ''
+    topic_rules.all.each do |rule|
+      if rule.has_entity_or?
+        if sql.length == 0
+          sql << '('
+        else
+          sql << 'OR '
+        end
+        sql << rule.to_sql
+      end
     end
-    query
+    sql << ')' if sql.length > 0
+    topic_rules.all.each do |rule|
+      if !rule.has_entity_or?
+        sql << 'AND ' if sql.length > 0
+        sql << rule.to_sql
+      end
+    end
+    industry.articles.where(sql)
   end
 end

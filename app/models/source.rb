@@ -14,7 +14,7 @@ class Source < ActiveRecord::Base
       min_space_required = max_articles - feed.entries.size
       if articles.count > min_space_required
         number_to_destroy = articles.count - min_space_required
-        articles.order('created_at').limit(number_to_destroy).destroy_all
+        articles.order('created_at, id').limit(number_to_destroy).destroy_all
       end
       # build new entries
       feed.entries.each do |entry|

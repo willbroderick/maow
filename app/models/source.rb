@@ -6,22 +6,27 @@ class Source < ActiveRecord::Base
   def fetch
     total = 0
     if last_fetched.nil? || last_fetched < DateTime.current - 30.minutes
-      update_columns(last_fetched: DateTime.current)
-      # fetch feed
-      feed = Feedjira::Feed.fetch_and_parse rss_url
-      # ensure we will not exceed capacity limits
-      max_articles = Rails.application.config.max_articles_per_source
-      min_space_required = max_articles - feed.entries.size
-      if articles.count > min_space_required
-        number_to_destroy = articles.count - min_space_required
-        articles.order('created_at, id').limit(number_to_destroy).destroy_all
-      end
-      # build new entries
-      feed.entries.each do |entry|
-        uid = Article.uid_from_entry(entry)
-        if !articles.where(uid: uid).exists?
-          total += 1 if articles.create_from_entry(entry)
+      begin
+        # fetch feed
+        feed = Feedjira::Feed.fetch_and_parse rss_url
+        # ensure we will not exceed capacity limits
+        max_articles = Rails.application.config.max_articles_per_source
+        min_space_required = max_articles - feed.entries.size
+        if articles.count > min_space_required
+          number_to_destroy = articles.count - min_space_required
+          articles.order('created_at, id').limit(number_to_destroy).destroy_all
         end
+        # build new entries
+        feed.entries.each do |entry|
+          uid = Article.uid_from_entry(entry)
+          if !articles.where(uid: uid).exists?
+            total += 1 if articles.create_from_entry(entry)
+          end
+        end
+        # mark after success
+        update_columns(last_fetched: DateTime.current)
+      rescue StandardError e
+        # meh...
       end
     end
     return total

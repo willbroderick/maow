@@ -23,6 +23,6 @@ module Maow
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
-    config.max_articles_per_source = 750
+    config.max_articles_per_source = 100000
   end
 end

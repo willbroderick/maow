@@ -16,7 +16,7 @@ gem 'jquery-rails'
 # gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'rails_12factor', group: :production
-
+gem 'figaro'
 gem 'feedjira'
 gem 'devise'
 gem 'rails_admin'

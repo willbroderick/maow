@@ -20,7 +20,6 @@
   <div class="main-nav">
     <% if current_user %>
       <% if current_user.is_admin %>
-        <%= link_to 'Fetch data', fetch_all_for_industry_path(@industry) %>
         <%= link_to 'Rebuild article entities', rebuild_all_for_industry_path(@industry) %>
         <%= link_to 'Reassess entities', reassess_all_for_industry_path(@industry) %>
       <% end %>

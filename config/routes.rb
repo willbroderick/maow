@@ -14,9 +14,6 @@ Rails.application.routes.draw do
   # viewing page for a topic
   get 'topic/:id' => 'topics#show', as: 'topic_show'
 
-  # fetch latest data
-  get 'fetch/:id' => 'sources#fetch_all_for_industry', as: 'fetch_all_for_industry'
-
   # rebuild entities
   get 'rebuild/:id' => 'sources#rebuild_all_for_industry', as: 'rebuild_all_for_industry'
 

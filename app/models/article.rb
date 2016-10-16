@@ -117,7 +117,7 @@ class Article < ActiveRecord::Base
     if true
       # one query to return all intersecting ids & weight
       sql = %{
-        SELECT article_id, SUM(entities.importance) AS weight
+        SELECT article_id, SUM(importance) AS weight
         FROM article_entities AS art_ent
           LEFT OUTER JOIN entities ON entities.id = art_ent.entity_id
         WHERE art_ent.entity_id IN
@@ -131,7 +131,7 @@ class Article < ActiveRecord::Base
                 AND t2.article_id <> #{self.id}
           )
         GROUP BY art_ent.article_id
-        HAVING weight > 15;
+        HAVING SUM(importance) > 15;
       }
       result = ActiveRecord::Base.connection.execute(sql)
       # create each vertex

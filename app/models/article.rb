@@ -2,6 +2,8 @@ class Article < ActiveRecord::Base
   belongs_to :source
   has_many :article_entities, dependent: :delete_all
   has_many :entities, through: :article_entities
+  has_many :article_graph_vertices, foreign_key: :article_1_id, dependent: :delete_all
+  has_many :similar_articles, through: :article_graph_vertices, source: :article_2
 
   def self.create_from_entry(entry, build_entities = true)
     article = create do |article|
@@ -102,5 +104,67 @@ class Article < ActiveRecord::Base
   def rebuild_entity_relations
     article_entities.delete_all
     build_entity_relations
+  end
+
+  def rebuild_vertices(source_ids = nil)
+    source_ids ||= source.industry.sources.pluck(:id)
+
+    # clear existing vertices
+    article_graph_vertices.delete_all
+    vertex_count = 0
+
+    # with each other article (in this industry), find words in common
+    if true
+      # one query to return all intersecting ids & weight
+      sql = %{
+        SELECT article_id, SUM(entities.importance) AS weight
+        FROM article_entities AS art_ent
+          LEFT OUTER JOIN entities ON entities.id = art_ent.entity_id
+        WHERE art_ent.entity_id IN
+          (
+              SELECT t1.entity_id FROM article_entities AS t1
+              WHERE t1.article_id = #{self.id} AND importance > 0
+            INTERSECT
+              SELECT t2.entity_id FROM article_entities AS t2
+              WHERE t2.article_id = art_ent.article_id
+                AND importance > 0
+                AND t2.article_id <> #{self.id}
+          )
+        GROUP BY art_ent.article_id
+        HAVING weight > 15;
+      }
+      result = ActiveRecord::Base.connection.execute(sql)
+      # create each vertex
+      sql = ''
+      result.each do |row|
+        sql << 'INSERT INTO article_graph_vertices (article_1_id, article_2_id, weight) '
+        sql << "VALUES (#{self.id}, #{row['article_id']}, #{row['weight']});"
+        vertex_count += 1
+      end
+      ActiveRecord::Base.connection.execute(sql)
+    else
+      # works, but slow as balls
+      sql = ''
+      articles = Article.where('source_id IN (?)', source_ids).each do |a|
+        importances = Entity.where(%{
+          id IN (
+            SELECT entity_id FROM article_entities
+            WHERE article_id = ?
+          ) AND id IN (
+            SELECT entity_id FROM article_entities
+            WHERE article_id = ?
+          ) AND importance > 0
+          }, self.id, a.id).pluck(:importance)
+        sum = importances.sum
+        if sum > 15
+          sql << 'INSERT INTO article_graph_vertices (article_1_id, article_2_id, weight)'
+          sql << " VALUES (#{self.id}, #{a.id}, #{sum});"
+          vertex_count += 1
+        end
+      end
+      ActiveRecord::Base.connection.execute(sql)
+    end
+
+    return vertex_count
   end
 end

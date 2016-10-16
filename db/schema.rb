@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161011072619) do
+ActiveRecord::Schema.define(version: 20161016090753) do
 
   create_table "article_entities", force: :cascade do |t|
     t.integer "article_id", null: false
@@ -20,6 +20,15 @@ ActiveRecord::Schema.define(version: 20161011072619) do
 
   add_index "article_entities", ["article_id"], name: "index_article_entities_on_article_id"
   add_index "article_entities", ["entity_id"], name: "index_article_entities_on_entity_id"
+
+  create_table "article_graph_vertices", force: :cascade do |t|
+    t.integer "article_1_id", null: false
+    t.integer "article_2_id", null: false
+    t.float   "weight",       null: false
+  end
+
+  add_index "article_graph_vertices", ["article_1_id"], name: "index_article_graph_vertices_on_article_1_id"
+  add_index "article_graph_vertices", ["article_2_id"], name: "index_article_graph_vertices_on_article_2_id"
 
   create_table "articles", force: :cascade do |t|
     t.integer  "source_id",                                    null: false

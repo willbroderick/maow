@@ -14,9 +14,15 @@ Rails.application.routes.draw do
   # viewing page for a topic
   get 'topic/:id' => 'topics#show', as: 'topic_show'
 
+  # viewing page for an article
+  get 'topic/:topic_id/article/:id' => 'articles#show', as: 'article_show'
+
   # rebuild entities
-  get 'rebuild/:id' => 'sources#rebuild_all_for_industry', as: 'rebuild_all_for_industry'
+  get 'rebuild_entities/:id' => 'industries#rebuild_entities_for_industry', as: 'rebuild_entities_for_industry'
+
+  # rebuild article vertices
+  get 'rebuild_vertices/:id' => 'industries#rebuild_vertices_for_industry', as: 'rebuild_vertices_for_industry'
 
   # assess entity importance
-  get 'reassess_entities/:id' => 'entities#reassess_all_for_industry', as: 'reassess_all_for_industry'
+  get 'reassess_entities/:id' => 'industries#reassess_entities_for_industry', as: 'reassess_entities_for_industry'
 end

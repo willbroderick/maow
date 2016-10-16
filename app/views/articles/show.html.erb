@@ -1,0 +1,15 @@
+<h1 class="headline"><%= @article.title.html_safe %></h1>
+
+<p>
+  <a href="<%= topic_show_path(@topic) %>">&larr; Back to <%= @topic.name %></a>
+  &ndash;
+  <a href="<%= @article.url %>" target="_blank">Original article &rarr;</a>
+</p>
+
+<div>
+  Similar articles:
+  <br>
+  <%= @article.article_graph_vertices.count %>
+  <br>
+  <%= @article.similar_articles.count %>
+</div>

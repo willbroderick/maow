@@ -20,8 +20,9 @@
   <div class="main-nav">
     <% if current_user %>
       <% if current_user.is_admin %>
-        <%= link_to 'Rebuild article entities', rebuild_all_for_industry_path(@industry) %>
-        <%= link_to 'Reassess entities', reassess_all_for_industry_path(@industry) %>
+        <%= link_to 'Rebuild article entities', rebuild_entities_for_industry_path(@industry) %>
+        <%= link_to 'Reassess entities', reassess_entities_for_industry_path(@industry) %>
+        <%= link_to 'Rebuild vertices', rebuild_vertices_for_industry_path(@industry) %>
       <% end %>
       <span>&bull;</span>
       <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>

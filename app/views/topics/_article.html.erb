@@ -6,7 +6,7 @@
   </div>
 
   <div class="article-headline headline">
-    <a href="<%= article.url %>" target="_blank"><%= article.title.html_safe %></a>
+    <a href="<%= article_show_path(@topic, article) %>"><%= article.title.html_safe %></a>
   </div>
 
   <div class="article-source">

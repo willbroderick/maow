@@ -20,9 +20,6 @@ Rails.application.routes.draw do
   # rebuild entities
   get 'rebuild_entities/:id' => 'industries#rebuild_entities_for_industry', as: 'rebuild_entities_for_industry'
 
-  # rebuild article vertices
-  get 'rebuild_vertices/:id' => 'industries#rebuild_vertices_for_industry', as: 'rebuild_vertices_for_industry'
-
   # assess entity importance
   get 'reassess_entities/:id' => 'industries#reassess_entities_for_industry', as: 'reassess_entities_for_industry'
 end

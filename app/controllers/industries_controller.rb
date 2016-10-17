@@ -23,9 +23,4 @@ class IndustriesController < ApplicationController
     @industry = Industry.find(params.require(:id))
     @industry.reassess_entity_importances
   end
-
-  def rebuild_vertices_for_industry
-    @industry = Industry.find(params.require(:id))
-    @count = @industry.rebuild_article_vertices
-  end
 end

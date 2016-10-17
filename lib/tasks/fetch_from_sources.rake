@@ -8,11 +8,5 @@ namespace :fetch_from_sources do
       end
     end
     puts "Articles fetched: #{@total} in #{(ms/1000).to_i}s"
-    ms = Benchmark.ms do
-      Industry.all.each do |industry|
-        industry.rebuild_article_vertices
-      end
-    end
-    puts "Article vertices rebuilt in #{(ms/1000).to_i}s"
   end
 end

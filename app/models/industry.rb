@@ -38,12 +38,4 @@ class Industry < ActiveRecord::Base
       entity.update(importance: 0) # triggers useful callback
     end
   end
-
-  def rebuild_article_vertices
-    count = 0
-    articles.each do |article|
-      count += article.rebuild_vertices(self.sources.pluck(:id))
-    end
-    return count
-  end
 end

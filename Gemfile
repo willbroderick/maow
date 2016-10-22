@@ -21,6 +21,9 @@ gem 'feedjira'
 gem 'devise'
 gem 'rails_admin'
 
+gem 'delayed_job_active_record'
+gem 'delayed_job_recurring'
+
 group :production do
   gem 'pg'
   gem 'puma'

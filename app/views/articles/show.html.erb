@@ -6,10 +6,4 @@
   <a href="<%= @article.url %>" target="_blank">Original article &rarr;</a>
 </p>
 
-<div>
-  Similar articles:
-  <br>
-  <%= @article.article_graph_vertices.count %>
-  <br>
-  <%= @article.similar_articles.count %>
-</div>
+<div data-ajax-load="<%= related_articles_path(@article) %>"></div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161022152051) do
+ActiveRecord::Schema.define(version: 20161022163603) do
 
   create_table "article_entities", force: :cascade do |t|
     t.integer "article_id", null: false
@@ -31,14 +31,15 @@ ActiveRecord::Schema.define(version: 20161022152051) do
   add_index "article_graph_vertices", ["article_2_id"], name: "index_article_graph_vertices_on_article_2_id"
 
   create_table "articles", force: :cascade do |t|
-    t.integer  "source_id",                                    null: false
-    t.string   "title",                                        null: false
+    t.integer  "source_id",                                          null: false
+    t.string   "title",                                              null: false
     t.text     "summary"
-    t.datetime "published_at",                                 null: false
-    t.text     "uid",                                          null: false
+    t.datetime "published_at",                                       null: false
+    t.text     "uid",                                                null: false
     t.string   "url"
     t.text     "raw"
-    t.datetime "created_at",   default: '2016-10-11 07:29:47', null: false
+    t.datetime "created_at",         default: '2016-10-11 07:29:47', null: false
+    t.datetime "graph_generated_at", default: '2015-10-22 15:53:45', null: false
   end
 
   add_index "articles", ["source_id"], name: "index_articles_on_source_id"
@@ -52,9 +53,9 @@ ActiveRecord::Schema.define(version: 20161022152051) do
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
+    t.integer  "priority",         default: 0,  null: false
+    t.integer  "attempts",         default: 0,  null: false
+    t.text     "handler",                       null: false
     t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
@@ -63,6 +64,7 @@ ActiveRecord::Schema.define(version: 20161022152051) do
     t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "custom_reference", default: "", null: false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"

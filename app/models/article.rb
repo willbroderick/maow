@@ -106,6 +106,30 @@ class Article < ActiveRecord::Base
     build_entity_relations
   end
 
+  def similar_articles_ready
+    # job running?
+    if Delayed::Job.where(custom_reference: dj_rebuild_vertices_id).exists?
+      false
+    else
+      # old data?
+      if graph_generated_at < DateTime.current - 6.hours
+        Article.delay(custom_reference: dj_rebuild_vertices_id).rebuild_vertices_for(id)
+        false
+      else
+        # cool
+        true
+      end
+    end
+  end
+
+  def dj_rebuild_vertices_id
+    "GraphArticle|#{id}"
+  end
+
+  def self.rebuild_vertices_for(id)
+    Article.find(id).rebuild_vertices
+  end
+
   def rebuild_vertices(source_ids = nil)
     source_ids ||= source.industry.sources.pluck(:id)
 
@@ -164,6 +188,8 @@ class Article < ActiveRecord::Base
       end
       ActiveRecord::Base.connection.execute(sql)
     end
+
+    update_column(:graph_generated_at, DateTime.current)
 
     return vertex_count
   end

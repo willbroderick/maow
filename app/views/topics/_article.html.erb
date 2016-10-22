@@ -6,7 +6,11 @@
   </div>
 
   <div class="article-headline headline">
+    <% if @topic %>
     <a href="<%= article_show_path(@topic, article) %>"><%= article.title.html_safe %></a>
+    <% else %>
+    <%= article.title.html_safe %>
+    <% end %>
   </div>
 
   <div class="article-source">

@@ -86,4 +86,28 @@ $(function($){
   $(window).on('load debouncedresize', function(){
     $('.article-bias-graph').trigger('dolayout');
   });
+
+  var preparingReloadDelay = 5000;
+  $(document).on('fetch', '[data-ajax-load]', function(){
+    var $this = $(this);
+    console.log('Fetching from '+$(this).data('ajax-load'));
+
+    $.get($(this).data('ajax-load'), function(res){
+
+      if(res.status == 'preparing') {
+        $this.html(res.data);
+        console.log('Reloading in '+preparingReloadDelay+'ms');
+        setTimeout(function(){
+          $this.trigger('fetch');
+        }, preparingReloadDelay);
+
+      } else if(res.status == 'success') {
+        $this.html(res.data);
+
+      }
+    }).error(function(res){
+      $this.html('error :(');
+    });
+  });
+  $('[data-ajax-load]').trigger('fetch');
 });

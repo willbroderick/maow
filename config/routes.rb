@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   # viewing page for an article
   get 'topic/:topic_id/article/:id' => 'articles#show', as: 'article_show'
 
+  # json endpoint for fetching related articles
+  get 'article/:id/related' => 'articles#related', as: 'related_articles'
+
   # rebuild entities
   get 'rebuild_entities/:id' => 'industries#rebuild_entities_for_industry', as: 'rebuild_entities_for_industry'
 

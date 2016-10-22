@@ -100,6 +100,9 @@ img {
     background: #f4f4f4 linear-gradient(90deg, #fafafa, #c6c6c6);
     height: 600px;
     overflow: auto;
+    .article {
+        opacity: 0.1;
+    }
     .article.placed {
         position: absolute;
     }
@@ -111,7 +114,6 @@ img {
     width: 350px;
     border-radius: 2px;
     background: transparent;
-    opacity: 0.1;
     &.placed {
         position: absolute;
         opacity: 1;

@@ -1,7 +1,7 @@
 class FetchFromSources
   include Delayed::RecurringJob
-  run_every 1.day
-  run_at { ['06:00','10:00','16:00','22:00'] }
+  run_every 4.hours
+  run_at '02:00am'
   queue 'slow-jobs'
 
   def perform

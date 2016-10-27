@@ -139,6 +139,9 @@ class Article < ActiveRecord::Base
 
     # with each other article (in this industry), find words in common
     if true
+      #TODO: DO IT QUICKLY
+
+    elsif false # VERY slow
       # one query to return all intersecting ids & weight
       sql = %{
         SELECT article_id, SUM(importance) AS weight
@@ -166,8 +169,8 @@ class Article < ActiveRecord::Base
         vertex_count += 1
       end
       ActiveRecord::Base.connection.execute(sql)
-    else
-      # works, but slow as balls
+
+    else # works, but slow as balls
       sql = ''
       articles = Article.where('source_id IN (?)', source_ids).each do |a|
         importances = Entity.where(%{

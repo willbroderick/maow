@@ -1,3 +1,5 @@
+include ActionView::Helpers::DateHelper
+
 class ArticlesController < ApplicationController
   def show
     @article = Article.includes(:source).find(params.require(:id))
@@ -18,9 +20,16 @@ class ArticlesController < ApplicationController
         data: render_to_string('related', layout: false)
       }
     else
+      time_mins = (DateTime.current.to_i - @article.rebuild_vertices_job.run_at.to_i)/60
+      time_secs = (DateTime.current.to_i - @article.rebuild_vertices_job.run_at.to_i) - time_mins*60
       {
         status: 'preparing',
-        data: "Finding similar articles... (found: #{@article.similar_articles.count})"
+        data: [
+          'Finding similar articles... (running for: ',
+          time_mins.to_s,
+          'm, ',
+          time_secs.to_s,
+          's)'].join('')
       }
     end
   end

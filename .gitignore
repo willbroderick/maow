@@ -17,5 +17,7 @@
 /tmp
 /shared
 
-# Ignore application configuration
+# application config
 /config/application.yml
+# foreman config
+.env

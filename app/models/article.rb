@@ -108,7 +108,7 @@ class Article < ActiveRecord::Base
 
   def similar_articles_ready
     # job running?
-    if Delayed::Job.where(custom_reference: dj_rebuild_vertices_id).exists?
+    if !rebuild_vertices_job.nil?
       false
     else
       # old data?
@@ -122,10 +122,15 @@ class Article < ActiveRecord::Base
     end
   end
 
+  def rebuild_vertices_job
+    Delayed::Job.where(custom_reference: dj_rebuild_vertices_id).take
+  end
+
   def dj_rebuild_vertices_id
     "GraphArticle|#{id}"
   end
 
+  # convenience method to avoid serialising whole article
   def self.rebuild_vertices_for(id)
     Article.find(id).rebuild_vertices
   end
@@ -138,10 +143,7 @@ class Article < ActiveRecord::Base
     vertex_count = 0
 
     # with each other article (in this industry), find words in common
-    if true
-      #TODO: DO IT QUICKLY
-
-    elsif false # VERY slow
+    if true # VERY slow
       # one query to return all intersecting ids & weight
       sql = %{
         SELECT article_id, SUM(importance) AS weight

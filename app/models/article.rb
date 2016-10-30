@@ -130,7 +130,7 @@ class Article < ActiveRecord::Base
     "GraphArticle|#{id}"
   end
 
-  # convenience method to avoid serialising whole article
+  # convenience method to avoid serialising an entire article
   def self.rebuild_vertices_for(id)
     Article.find(id).rebuild_vertices
   end

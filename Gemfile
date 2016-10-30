@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
+gem 'dotenv-rails' # always load first
+
 gem 'rails', '4.2.5'
 
 # Use SCSS for stylesheets
@@ -17,7 +19,6 @@ gem 'jquery-rails'
 
 gem 'rails_12factor', group: :production
 gem 'foreman'
-gem 'figaro'
 gem 'feedjira'
 gem 'devise'
 gem 'rails_admin'

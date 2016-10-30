@@ -17,7 +17,5 @@
 /tmp
 /shared
 
-# application config
-/config/application.yml
-# foreman config
+# dotenv & foreman config
 .env

@@ -143,7 +143,7 @@ class Article < ActiveRecord::Base
     vertex_count = 0
 
     # with each other article (in this industry), find words in common
-    if false # VERY slow
+    if true # VERY slow
       # one query to return all intersecting ids & weight
       sql = %{
         SELECT article_id, SUM(importance) AS weight
